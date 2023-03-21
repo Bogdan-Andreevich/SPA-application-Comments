@@ -1,0 +1,15 @@
+.comment {
+    margin-bottom: 20px;
+}
+
+.comment .reply {
+    margin-left: 20px;
+}
+
+.comment .reply-form {
+    display: none;
+}
+
+.comment .reply-form.show {
+    display: block;
+}
