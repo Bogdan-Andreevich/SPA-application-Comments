@@ -2,36 +2,58 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comments;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use ReCaptcha\ReCaptcha;
+use Illuminate\Support\Facades\Validator;
+use Mews\Captcha\Captcha;
+
 
 class CommentsController extends Controller
 {
     function create()
     {
-        return view('сascading-сomments');
+        $captcha = app('captcha');
+        return view('сascading-сomments', compact('captcha'));
     }
 
-    function store(Request $request)
+    function store(Request $request, Captcha $captcha)
     {
-        $recaptcha = new ReCaptcha(env('RECAPTCHA_SECRET_KEY'));
-        $response = $recaptcha->verify($request->input('g-recaptcha-response'), $request->ip());
 
-        if (!$response->isSuccess()) {
-            return redirect()->back()->withInput()->withErrors(['captcha' => 'reCAPTCHA verification failed.']);
-        }
-        $dataFromCommentsForm = $request->validate([
-            'name' => 'required|string|between:2,100',
-            'email' => 'required|string|email|max:100|unique:comments',
-            'text' => 'required|string|max:100',
-            'g-recaptcha-response' => 'required|recaptcha',
-        ]);
+//        $dataFromCommentsForm = Validator::make($request->all(),[
+//            'name' => 'required|string|between:2,100',
+//            'email' => 'required|string|email|max:100|unique:comments',
+//            'captcha' => 'required|captcha',
+//            'text' => 'required|string|max:100',
+//        ]);
+        $dataFromCommentsForm = $request->all();
 
-        if($dataFromCommentsForm->fails()) {
-            return redirect()->back()->withInput()->withErrors(['comments' => 'You entered the wrong data']);
+        $captchaData = $request->captcha;
+        $isCaptchaCorrect = $captcha->check($captchaData);
+
+        if (!$isCaptchaCorrect) {
+            return back()->withErrors(['captcha' => 'The captcha code is invalid.']);
         }
+//        if($dataFromCommentsForm->fails()) {
+//            return redirect()->back()->withInput()->withErrors(['comments' => 'You entered the wrong data']);
+//        }
+
+//        $captcha->remove('captcha');
+        try {
+            $comment = Comments::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'text' => $request->text,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['comments' => 'Error saving comment']);
+        }
+
+        return $comment;
+
+
 
     }
 }
