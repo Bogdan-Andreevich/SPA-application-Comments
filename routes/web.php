@@ -20,3 +20,4 @@ use App\Http\Controllers\CommentsController;
 
 Route::get('/', [CommentsController::class, 'create'])->name('сomments');
 Route::post('/', [CommentsController::class, 'store']);
+

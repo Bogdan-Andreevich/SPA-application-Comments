@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CommentReplies;
 use App\Models\Comments;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -10,28 +11,19 @@ use Illuminate\Support\Facades\DB;
 use ReCaptcha\ReCaptcha;
 use Illuminate\Support\Facades\Validator;
 use Mews\Captcha\Captcha;
-
-
-class CommentsController extends Controller
+class CommentRepliesController extends Controller
 {
-    function create()
-    {
-        $captcha = app('captcha');
-        $comments = Comments::all();
-        return view('сascading-сomments', compact('captcha', 'comments'));
-    }
-
     function store(Request $request, Captcha $captcha)
     {
 
-        $dataFromCommentsForm = Validator::make($request->all(),[
+        $dataFromCommentsRepliesForm = Validator::make($request->all(),[
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:comments',
             'text' => 'required|string|max:100',
         ]);
 
-        if($dataFromCommentsForm->fails()) {
-            return redirect()->back()->withInput()->withErrors(['comments' => 'Вы ввели неправильные данные']);
+        if($dataFromCommentsRepliesForm->fails()) {
+            return redirect()->back()->withInput()->withErrors(['replies' => 'Вы ввели неправильные данные']);
         }
 
         $captchaData = $request->captcha;
@@ -47,18 +39,13 @@ class CommentsController extends Controller
         }
 
         try {
-            $comment = Comments::create([
+            $commentReplies = CommentReplies::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'text' => $request->text,
             ]);
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->withErrors(['comments' => 'Ошибка при сохранении комментария']);
+            return redirect()->back()->withInput()->withErrors(['replies' => 'Ошибка при сохранении ответа на комментарий']);
         }
-
-        $comments = Comments::all();
-
-        return back()->with(['success' => true, 'comments' => $comments]);
-
     }
 }
