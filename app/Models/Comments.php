@@ -13,5 +13,16 @@ class Comments extends Model
         'name',
         'email',
         'text',
+        'parent_id',
     ];
+
+    public function parent()
+    {
+        return $this->belongsTo(Comments::class, 'parent_id');
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Comments::class, 'parent_id');
+    }
 }
