@@ -9,7 +9,8 @@
     <script defer src="{{ asset("js/Comments.js")}}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="{{ asset("css/CommentsController.css") }}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 <form method="POST" action="{{ route('сomments') }}">
@@ -21,16 +22,26 @@
                 <form id="comment-form">
                     <div class="form-group">
                         <label for="name">Имя</label>
-                        <input type="text" class="form-control" id="name" required>
+                        <input type="text" name="name" class="form-control" id="name" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Емаил</label>
-                        <input type="email" class="form-control" id="email" required>
+                        <input type="email" name="email" class="form-control" id="email" required>
                     </div>
-                    <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+
+                    <img src="{{ $captcha->src() }}" alt="captcha">
+
+                    <input id="captcha" type="text" class="form-control" name="captcha">
+
+                    @if ($errors->has('captcha'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('captcha') }}</strong>
+                        </span>
+                    @endif
+
                     <div class="form-group">
                         <label for="comment">Комментарий</label>
-                        <textarea class="form-control" id="comment" rows="5" required></textarea>
+                        <textarea class="form-control" name="text" id="comment" rows="5" required></textarea>
                     </div>
 
                     @if ($errors->has('comment'))
