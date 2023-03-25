@@ -6,14 +6,17 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script defer src="{{ asset("js/Comments.js")}}"></script>
+{{--    <script defer src="{{ asset("js/Comments.js")}}"></script>--}}
+{{--    <script defer src="{{ asset("js/test.js")}}"></script>--}}
+    <link rel="stylesheet" href="{{ asset("css/Comments.css") }}">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="{{ asset("css/CommentsController.css") }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 <body>
-<form method="POST" action="{{ route('сomments') }}">
+<form id="comment-form" method="POST" action="{{ route('сomments') }}">
     @csrf
     <div class="container">
         <div class="row">
@@ -28,10 +31,14 @@
                         <label for="email">Емаил</label>
                         <input type="email" name="email" class="form-control" id="email" required>
                     </div>
+                    @if ($errors->has('email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('email') }}</strong>
+                        </span>
+                    @endif
+{{--                    <img src="{{ $captcha->src() }}" alt="captcha">--}}
 
-                    <img src="{{ $captcha->src() }}" alt="captcha">
-
-                    <input id="captcha" type="text" class="form-control" name="captcha">
+{{--                    <input id="captcha" type="text" class="form-control" name="captcha">--}}
 
                     @if ($errors->has('captcha'))
                         <span class="help-block">
@@ -49,6 +56,7 @@
                             <strong>{{ $errors->first('comment') }}</strong>
                         </span>
                     @endif
+                    <input type="hidden" name="parent_id" value="{{ $parent_id ?? null }}">
                     <button type="submit" class="btn btn-primary">Добавить комментарий</button>
                 </form>
                 <hr>
@@ -60,7 +68,26 @@
                                 <span class="comment-date">{{ $comment->created_at->format('d.m.Y H:i') }}</span>
                             </div>
                             <div class="comment-text">{{ $comment->text }}</div>
-                            <a href="#" class="reply-link">Reply</a>
+
+                            <a href="#" class="reply-button">Reply</a>
+
+{{--                            <div class="reply-form" style="display: none;">--}}
+{{--                                <form>--}}
+{{--                                    <label for="name">Name:</label>--}}
+{{--                                    <input type="text" id="name">--}}
+{{--                                    <br>--}}
+{{--                                    <label for="email">Email:</label>--}}
+{{--                                    <input type="email" id="email">--}}
+{{--                                    <br>--}}
+{{--                                    <label for="comment">Comment.php:</label>--}}
+{{--                                    <textarea id="comment"></textarea>--}}
+{{--                                    <br>--}}
+{{--                                    <button type="submit">Submit</button>--}}
+{{--                                </form>--}}
+{{--                            </div>--}}
+
+
+
                             <div class="reply-form">
                                 <form method="POST" action="{{ route('сomments') }}">
                                     @csrf
@@ -80,41 +107,43 @@
                                     <button type="submit" class="btn btn-primary">Добавить комментарий</button>
                                 </form>
                             </div>
-                            @if(count($comment->replies))
-                                <div class="nested-comments">
-                                    @foreach($comment->replies as $reply)
-                                        <div class="comment nested-comment">
-                                            <div class="comment-info">
-                                                <strong class="comment-author">{{ $reply->name }}</strong>
-                                                <span class="comment-date">{{ $reply->created_at->format('d.m.Y H:i') }}</span>
-                                            </div>
-                                            <div class="comment-text">{{ $reply->text }}</div>
-                                            <a href="#" class="reply-link">Reply</a>
-                                            <div class="reply-form">
-                                                <form method="POST" action="{{ route('сomments') }}">
-                                                    @csrf
-                                                    <div class="form-group">
-                                                        <label for="name">Имя</label>
-                                                        <input type="text" name="name" class="form-control" id="name" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="email">Емаил</label>
-                                                        <input type="email" name="email" class="form-control" id="email" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="comment">Комментарий</label>
-                                                        <textarea class="form-control" name="text" id="comment" rows="5" required></textarea>
-                                                    </div>
-                                                    <input type="hidden" name="parent_id" value="{{ $reply->id }}">
-                                                    <button type="submit" class="btn btn-primary">Добавить комментарий</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endif
+{{--                            @if(count($comments->parent_id))--}}
+{{--                                <div class="nested-comments">--}}
+{{--                                    @foreach($comments->parent_id as $reply)--}}
+{{--                                        <div class="comment nested-comment">--}}
+{{--                                            <div class="comment-info">--}}
+{{--                                                <strong class="comment-author">{{ $reply->name}}</strong>--}}
+{{--                                                <span class="comment-date">{{ $reply->created_at->format('d.m.Y H:i')}}</span>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="comment-text">{{ $reply->text}}</div>--}}
+{{--                                            <a href="#" class="reply-link">Reply</a>--}}
+{{--                                            <div class="reply-form">--}}
+{{--                                                <form method="POST" action="{{ route('сomments') }}">--}}
+{{--                                                    @csrf--}}
+{{--                                                    <div class="form-group">--}}
+{{--                                                        <label for="name">Имя</label>--}}
+{{--                                                        <input type="text" name="name" class="form-control" id="name" required>--}}
+{{--                                                    </div>--}}
+{{--                                                    <div class="form-group">--}}
+{{--                                                        <label for="email">Емаил</label>--}}
+{{--                                                        <input type="email" name="email" class="form-control" id="email" required>--}}
+{{--                                                    </div>--}}
+{{--                                                    <div class="form-group">--}}
+{{--                                                        <label for="comment">Комментарий</label>--}}
+{{--                                                        <textarea class="form-control" name="text" id="comment" rows="5" required></textarea>--}}
+{{--                                                    </div>--}}
+{{--                                                    <input type="hidden" name="parent_id" value="{{ $reply->id}}">--}}
+{{--                                                    <button type="submit" class="btn btn-primary">Добавить комментарий</button>--}}
+{{--                                                </form>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    @endforeach--}}
+{{--                                </div>--}}
+{{--                            @endif--}}
                         </div>
                     @endforeach
+                </div>
+
                 </div>
             </div>
         </div>

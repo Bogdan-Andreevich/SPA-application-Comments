@@ -1,4 +1,4 @@
-// Добавляем комментарий
+// // Добавляем комментарий
 function addComment(name, comment, parentComment) {
     var commentsList = document.getElementById("comments-list");
 
@@ -71,8 +71,14 @@ commentFormEl.addEventListener("submit", function(event) {
     var name = event.target.querySelector("#name").value;
     var comment = event.target.querySelector("#comment").value;
 
-    addComment(name, comment);
-
-    // Очищаем поля формы
-    event.target.reset();
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/comments');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        if (xhr.status === 200 && xhr.responseText) {
+            var parentCommentEl = document.getElementById('comments-list');
+            addComment(name, comment, parentCommentEl);
+        }
+    };
+    xhr.send(encodeURI('name=' + name + '&comment=' + comment));
 });
