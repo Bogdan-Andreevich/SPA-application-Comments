@@ -16,7 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->text('text');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('parent_id')
+                ->references('id')
+                ->on('comments')
+                ->onDelete('cascade');
+
         });
     }
 
