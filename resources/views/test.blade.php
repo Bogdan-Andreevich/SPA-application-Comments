@@ -9,7 +9,7 @@
     <script defer src="{{ asset("js/Comments.js")}}"></script>
     <script defer src="{{ asset("js/test.js")}}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <link rel="stylesheet" href="{{ asset("css/Comments.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/CommentsController.css") }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -81,24 +81,42 @@
                                     <button type="submit" class="btn btn-primary">Добавить комментарий</button>
                                 </form>
                             </div>
-                            @endforeach
+                            @if(count($comment->replies))
                                 <div class="nested-comments">
-                                    @if(count($comment->replies))
-                                        @foreach($comment->replies as $reply)
-                                            <div class="comment nested-comment">
-                                                <div class="comment-info">
-                                                    <strong class="comment-author">{{ $reply->name }}</strong>
-                                                    <span class="comment-date">{{ $reply->created_at->format('d.m.Y H:i') }}</span>
-                                                </div>
-                                                <div class="comment-text">{{ $reply->text }}</div>
-                                                <a href="#" class="reply-link">Reply</a>
+                                    @foreach($comment->replies as $reply)
+                                        <div class="comment nested-comment">
+                                            <div class="comment-info">
+                                                <strong class="comment-author">{{ $reply->name }}</strong>
+                                                <span class="comment-date">{{ $reply->created_at->format('d.m.Y H:i') }}</span>
                                             </div>
-                                        @endforeach
-                                    @endif
+                                            <div class="comment-text">{{ $reply->text }}</div>
+                                            <a href="#" class="reply-link">Reply</a>
+                                            <div class="reply-form">
+{{--                                                <form method="POST" action="{{ route('reply') }}">--}}
+{{--                                                    @csrf--}}
+{{--                                                    <div class="form-group">--}}
+{{--                                                        <label for="name">Имя</label>--}}
+{{--                                                        <input type="text" name="name" class="form-control" id="name" required>--}}
+{{--                                                    </div>--}}
+{{--                                                    <div class="form-group">--}}
+{{--                                                        <label for="email">Емаил</label>--}}
+{{--                                                        <input type="email" name="email" class="form-control" id="email" required>--}}
+{{--                                                    </div>--}}
+{{--                                                    <div class="form-group">--}}
+{{--                                                        <label for="comment">Комментарий</label>--}}
+{{--                                                        <textarea class="form-control" name="text" id="comment" rows="5" required></textarea>--}}
+{{--                                                    </div>--}}
+{{--                                                    <input type="hidden" name="parent_id" value="{{ $reply->id }}">--}}
+{{--                                                    <button type="submit" class="btn btn-primary">Добавить комментарий</button>--}}
+{{--                                                </form>--}}
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-
+                            @endif
                         </div>
-{{--                    @endforeach--}}
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

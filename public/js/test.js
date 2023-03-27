@@ -1,9 +1,33 @@
-// Получаем ссылку "Reply" и форму для ввода комментария
-const replyButton = document.querySelector('.reply-button');
-const replyForm = document.querySelector('.reply-form');
+document.addEventListener('DOMContentLoaded', function() {
+    // Получаем все контейнеры с формами ответа на комментарий и закрываем их
+    var replyForms = document.querySelectorAll('.reply-form-container');
+    for (var j = 0; j < replyForms.length; j++) {
+        replyForms[j].style.display = 'none';
+    }
 
-// Добавляем обработчик события клика на ссылку "Reply"
-replyButton.addEventListener('click', function(event) {
-    event.preventDefault(); // Предотвращаем переход по ссылке
-    replyForm.style.display = 'block'; // Отображаем форму для ввода комментария
+    // Получаем все ссылки Reply
+    var replyLinks = document.querySelectorAll('.reply-link');
+
+    // Обходим ссылки и добавляем обработчики событий
+    for (var i = 0; i < replyLinks.length; i++) {
+        replyLinks[i].addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Находим контейнер с формой ответа на комментарий
+            var container = this.parentNode.querySelector('.reply-form-container');
+
+            // Проверяем, отображается ли форма. Если да, скрываем ее, иначе показываем
+            if (container.style.display === 'block') {
+                container.style.display = 'none';
+            } else {
+                container.style.display = 'block';
+            }
+        });
+    }
 });
+
+
+
+
+
+
