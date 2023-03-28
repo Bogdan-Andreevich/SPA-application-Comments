@@ -81,7 +81,6 @@
                                     <button type="submit" class="btn btn-primary">Добавить комментарий</button>
                                 </form>
                             </div>
-                            @endforeach
                             <div class="nested-comments">
                                 @if(count($comment->replies))
                                     @foreach($comment->replies as $reply)
@@ -96,9 +95,8 @@
                                     @endforeach
                                 @endif
                             </div>
-
                         </div>
-                        {{--                    @endforeach--}}
+                    @endforeach
                 </div>
             </div>
         </div>
