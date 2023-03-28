@@ -19,7 +19,7 @@ use App\Http\Controllers\CommentsController;
 //});
 
 Route::get('/', [CommentsController::class, 'create'])->name('сomments');
-Route::post('/', [CommentsController::class, 'store']);
+Route::post('/', [CommentsController::class, 'store'])->name('secondReply');
 
 Route::post('/reply', [CommentsController::class, 'reply'])->name('reply');
 

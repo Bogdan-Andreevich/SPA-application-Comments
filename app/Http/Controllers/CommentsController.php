@@ -3,23 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comments;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Support\Facades\DB;
-//use PhpParser\Comment;
-use ReCaptcha\ReCaptcha;
 use Illuminate\Support\Facades\Validator;
 use Mews\Captcha\Captcha;
 
 
 class CommentsController extends Controller
 {
-    function create()
+    function create($parentId = null)
     {
         $captcha = app('captcha');
-        $comments = Comments::all();
-        return view('сascading-сomments', compact('captcha', 'comments'));
+        $comments = Comments::where('parent_id', $parentId)->get();
+        return view('сascading-сomments', compact('captcha', 'comments', 'parentId'));
     }
 
 
