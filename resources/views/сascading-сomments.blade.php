@@ -62,7 +62,7 @@
                             </div>
                             <div class="comment-text">{{ $comment->text }}</div>
                             <a href="#" class="reply-link">Reply</a>
-                            <div class="reply-form-container">
+                            <div class="reply-form-container reply-comment"> <!-- add class reply-comment here -->
                                 <form method="POST" action="{{ route('reply') }}">
                                     @csrf
                                     <div class="form-group">
@@ -81,7 +81,7 @@
                                     <button type="submit" class="btn btn-primary">Добавить комментарий</button>
                                 </form>
                             </div>
-                            <div class="nested-comments">
+                            <div class="nested-comments"> <!-- move nested-comments inside comment-text -->
                                 @if(count($comment->replies))
                                     @foreach($comment->replies as $reply)
                                         <div class="comment nested-comment">
@@ -91,6 +91,25 @@
                                             </div>
                                             <div class="comment-text">{{ $reply->text }}</div>
                                             <a href="#" class="reply-link">Reply</a>
+                                            <div class="reply-form-container reply-comment"> <!-- add class reply-comment here -->
+                                                <form method="POST" action="{{ route('reply') }}">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="name">Имя</label>
+                                                        <input type="text" name="name" class="form-control" id="name" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="email">Емаил</label>
+                                                        <input type="email" name="email" class="form-control" id="email" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="comment">Комментарий</label>
+                                                        <textarea class="form-control" name="text" id="comment" rows="5" required></textarea>
+                                                    </div>
+                                                    <input type="hidden" name="parent_id" value="{{ $reply->id }}">
+                                                    <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+                                                </form>
+                                            </div>
                                         </div>
                                     @endforeach
                                 @endif
