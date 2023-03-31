@@ -53,7 +53,7 @@ class CommentsController extends Controller
 
     }
 
-    function reply(Request $request)
+    function reply(Request $request, Captcha $captcha)
     {
         $dataFromRepliesForm = $request->validate([
             'name' => 'required|string|max:255',
@@ -61,6 +61,18 @@ class CommentsController extends Controller
             'text' => 'required|string|max:1000',
             'parent_id' => 'required|integer',
         ]);
+
+//        $captchaData = $request->captcha;
+//
+//        if (!$captchaData) {
+//            return back()->withErrors(['captcha' => 'Пройдите капчу']);
+//        }
+//
+//        $isCaptchaCorrect = $captcha->check($captchaData);
+//
+//        if (!$isCaptchaCorrect) {
+//            return back()->withErrors(['captcha' => 'Код капчи недействителен']);
+//        }
 
         $comment = Comments::findOrFail($dataFromRepliesForm['parent_id']);
 
