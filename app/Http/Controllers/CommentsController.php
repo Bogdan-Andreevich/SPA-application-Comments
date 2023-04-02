@@ -3,23 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comments;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Support\Facades\DB;
-//use PhpParser\Comment;
-use ReCaptcha\ReCaptcha;
 use Illuminate\Support\Facades\Validator;
 use Mews\Captcha\Captcha;
 
 
 class CommentsController extends Controller
 {
-    function create()
+    function create($parentId = null)
     {
         $captcha = app('captcha');
-        $comments = Comments::all();
-        return view('сascading-сomments', compact('captcha', 'comments'));
+        $comments = Comments::where('parent_id', $parentId)->get();
+        return view('сascading-сomments', compact('captcha', 'comments', 'parentId'));
     }
 
 
@@ -58,7 +53,7 @@ class CommentsController extends Controller
 
     }
 
-    function reply(Request $request)
+    function reply(Request $request, Captcha $captcha)
     {
         $dataFromRepliesForm = $request->validate([
             'name' => 'required|string|max:255',
@@ -66,6 +61,18 @@ class CommentsController extends Controller
             'text' => 'required|string|max:1000',
             'parent_id' => 'required|integer',
         ]);
+
+//        $captchaData = $request->captcha;
+//
+//        if (!$captchaData) {
+//            return back()->withErrors(['captcha' => 'Пройдите капчу']);
+//        }
+//
+//        $isCaptchaCorrect = $captcha->check($captchaData);
+//
+//        if (!$isCaptchaCorrect) {
+//            return back()->withErrors(['captcha' => 'Код капчи недействителен']);
+//        }
 
         $comment = Comments::findOrFail($dataFromRepliesForm['parent_id']);
 
