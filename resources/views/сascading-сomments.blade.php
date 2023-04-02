@@ -14,11 +14,11 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<form method="POST" action="{{ route('сomments') }}">
+<form method="POST" action="{{ route('comments') }}">
     @csrf
     <div class="container">
-        <div class="row">
-            <div class="col-md-8">
+        <div class="">
+            <div class="">
                 <h1>Комментарии</h1>
                 <form id="comment-form">
                     <div class="form-group">
@@ -30,9 +30,9 @@
                         <input type="email" name="email" class="form-control" id="email" required>
                     </div>
 
-{{--                    <img src="{{ $captcha->src() }}" alt="captcha">--}}
+                    <img src="{{ $captcha->src() }}" alt="captcha">
 
-{{--                    <input id="captcha" type="text" class="form-control" name="captcha">--}}
+                    <input id="captcha" type="text" class="form-control" name="captcha">
 
                     @if ($errors->has('captcha'))
                         <span class="help-block">
@@ -54,53 +54,11 @@
                 </form>
                 <hr>
                 <div id="comments-list">
-                    @foreach($comments as $comment)
-                        <div class="comment">
-                            <div class="comment-info">
-                                <strong class="comment-author">{{ $comment->name }}</strong>
-                                <span class="comment-date">{{ $comment->created_at->format('d.m.Y H:i') }}</span>
-                            </div>
-                            <div class="comment-text">{{ $comment->text }}</div>
-                            <a href="#" class="reply-link">Reply</a>
-                            <div class="reply-form-container">
-                                <form method="POST" action="{{ route('reply') }}">
-                                    @csrf
-                                    <div class="form-group">
-                                        <label for="name">Имя</label>
-                                        <input type="text" name="name" class="form-control" id="name" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Емаил</label>
-                                        <input type="email" name="email" class="form-control" id="email" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="comment">Комментарий</label>
-                                        <textarea class="form-control" name="text" id="comment" rows="5" required></textarea>
-                                    </div>
-                                    <input type="hidden" name="parent_id" value="{{ $comment->id }}">
-                                    <button type="submit" class="btn btn-primary">Добавить комментарий</button>
-                                </form>
-                            </div>
-                            @endforeach
-                                <div class="nested-comments">
-                                    @if(count($comment->replies))
-                                        @foreach($comment->replies as $reply)
-                                            <div class="comment nested-comment">
-                                                <div class="comment-info">
-                                                    <strong class="comment-author">{{ $reply->name }}</strong>
-                                                    <span class="comment-date">{{ $reply->created_at->format('d.m.Y H:i') }}</span>
-                                                </div>
-                                                <div class="comment-text">{{ $reply->text }}</div>
-                                                <a href="#" class="reply-link">Reply</a>
-                                            </div>
-                                        @endforeach
-                                    @endif
-                                </div>
-
-                        </div>
-{{--                    @endforeach--}}
+                    @include('comments', ['comments' => $comments])
+                </div>
             </div>
         </div>
+    </div>
     </div>
 </form>
 </body>
