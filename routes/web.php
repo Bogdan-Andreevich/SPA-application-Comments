@@ -18,8 +18,8 @@ use App\Http\Controllers\CommentsController;
 //    return view('welcome');
 //});
 
-Route::get('/', [CommentsController::class, 'create'])->name('сomments');
-Route::post('/', [CommentsController::class, 'store'])->name('secondReply');
+Route::get('/', [CommentsController::class, 'create'])->name('comments');
+Route::post('/', [CommentsController::class, 'store']);
 
 Route::post('/reply', [CommentsController::class, 'reply'])->name('reply');
 
