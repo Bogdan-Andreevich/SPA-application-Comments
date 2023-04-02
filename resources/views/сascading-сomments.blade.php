@@ -14,7 +14,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<form method="POST" action="{{ route('сomments') }}">
+<form method="POST" action="{{ route('comments') }}">
     @csrf
     <div class="container">
         <div class="">
@@ -58,7 +58,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </form>
 </body>
