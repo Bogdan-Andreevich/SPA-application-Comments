@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script defer src="{{ asset("js/Comments.js")}}"></script>
-    <script defer src="{{ asset("js/test.js")}}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="{{ asset("css/Comments.css") }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -17,48 +16,43 @@
 <form method="POST" action="{{ route('comments') }}">
     @csrf
     <div class="container">
-        <div class="">
-            <div class="">
-                <h1>Комментарии</h1>
-                <form id="comment-form">
-                    <div class="form-group">
-                        <label for="name">Имя</label>
-                        <input type="text" name="name" class="form-control" id="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Емаил</label>
-                        <input type="email" name="email" class="form-control" id="email" required>
-                    </div>
+        <h1>Комментарии</h1>
+        <form id="comment-form">
 
-                    <img src="{{ $captcha->src() }}" alt="captcha">
+            <div class="form-group">
+                <label for="name">Имя</label>
+                <input type="text" name="name" class="form-control" id="name" maxlength="100" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Емаил</label>
+                <input type="email" name="email" class="form-control" id="email" maxlength="100" required>
+            </div>
 
-                    <input id="captcha" type="text" class="form-control" name="captcha">
+            <img src="{{ $captcha->src() }}" alt="captcha">
 
-                    @if ($errors->has('captcha'))
-                        <span class="help-block">
+            <input id="captcha" type="text" class="form-control" name="captcha">
+
+            @if ($errors->has('captcha'))
+                <span class="help-block">
                             <strong>{{ $errors->first('captcha') }}</strong>
                         </span>
-                    @endif
+            @endif
 
-                    <div class="form-group">
-                        <label for="comment">Комментарий</label>
-                        <textarea class="form-control" name="text" id="comment" rows="5" required></textarea>
-                    </div>
-
-                    @if ($errors->has('comment'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('comment') }}</strong>
+            <div class="form-group">
+                <label for="comment">Комментарий</label>
+                <textarea class="form-control" name="text" id="comment" rows="5" maxlength="300" required></textarea>
+                @if ($errors->has('text'))
+                    <span class="help-block">
+                            <strong>{{ $errors->first('text') }}</strong>
                         </span>
-                    @endif
-                    <button type="submit" class="btn btn-primary">Добавить комментарий</button>
-                </form>
-                <hr>
-                <div id="comments-list">
-                    @include('comments', ['comments' => $comments])
-                </div>
+                @endif
             </div>
+            <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+        </form>
+        <hr>
+        <div id="comments-list">
+            @include('comments', ['comments' => $comments])
         </div>
-    </div>
     </div>
 </form>
 </body>

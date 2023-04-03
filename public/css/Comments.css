@@ -1,47 +1,104 @@
 
-.comment {
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
+/*.comment {*/
+/*    margin-bottom: 20px;*/
+/*    border: 1px solid #ccc;*/
+/*    padding: 20px*/
+/*}*/
 
-.comment-info {
+/*.comment-info {*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
+/*.comment-author {*/
+/*    font-weight: bold;*/
+/*}*/
+
+/*.comment-date {*/
+/*    margin-left: 10px;*/
+/*    color: #999;*/
+/*}*/
+
+/*.comment-text {*/
+/*    margin-bottom: 10px;*/
+/*    word-wrap: break-word;*/
+/*}*/
+
+/*.reply-link {*/
+/*    margin-left: 10px;*/
+/*    color: #999;*/
+/*    text-decoration: underline;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.reply-form-container {*/
+/*    margin-left: 50px;*/
+/*    display: none;*/
+/*}*/
+
+/*.nested-comments {*/
+/*    margin-left: 50px;*/
+/*    border-left: 1px solid #ccc;*/
+/*    padding-left: 10px;*/
+/*}*/
+
+/*.nested-comment {*/
+/*    margin-bottom: 10px;*/
+/*    border-left: 1px solid #ccc;*/
+/*    padding-left: 10px;*/
+/*}*/
+
+
+
+
+.comment {
+    margin-left: 0;
     margin-bottom: 10px;
 }
 
-.comment-author {
+.comment > .comment {
+    margin-left: 30px;
+}
+
+.comment-info {
     font-weight: bold;
+    background-color: rgba(246, 244, 244, 0.77);
 }
 
 .comment-date {
     margin-left: 10px;
-    color: #999;
+    color: #777;
+}
+
+.comment-text {
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.reply-link {
+    display: block;
+    margin-top: 10px;
+    color: #777;
+}
+
+.reply-link:hover {
+    text-decoration: underline;
+}
+
+.reply-form-container {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    display: none;
+}
+
+.reply-comment {
+    margin-left: 30px;
 }
 
 .comment-text {
     margin-bottom: 10px;
+    word-wrap: break-word;
 }
 
-.reply-link {
-    margin-left: 10px;
-    color: #999;
-    text-decoration: underline;
-    cursor: pointer;
-}
 
-.reply-form-container {
-    margin-left: 50px;
-    display: none;
-}
-
-.nested-comments {
-    margin-left: 50px;
-    border-left: 1px solid #ccc;
-    padding-left: 10px;
-}
-
-.nested-comment {
-    margin-bottom: 10px;
-    border-left: 1px solid #ccc;
-    padding-left: 10px;
-}

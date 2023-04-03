@@ -21,58 +21,73 @@ class CommentsController extends Controller
     function store(Request $request, Captcha $captcha)
     {
 
-        $dataFromCommentsForm = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(),[
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100',
-            'text' => 'required|string|max:100',
+            'text' => 'required|string|max:300',
             'parent_id' => 'nullable|integer|exists:comments,id'
         ]);
 
-        if($dataFromCommentsForm->fails()) {
-            return redirect()->back()->withInput()->withErrors(['comments' => 'Вы ввели неправильные данные']);
+        if($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors(['text' => 'Вы ввели неправильные данные']);
         }
 
-//        $captchaData = $request->captcha;
-//
-//        if (!$captchaData) {
-//            return back()->withErrors(['captcha' => 'Пройдите капчу']);
-//        }
-//
-//        $isCaptchaCorrect = $captcha->check($captchaData);
-//
-//        if (!$isCaptchaCorrect) {
-//            return back()->withErrors(['captcha' => 'Код капчи недействителен']);
-//        }
-        $comment = $request->only('name', 'email', 'text', 'parent_id');
-        try {
-            Comments::create($comment);
-        } catch (\Exception $e) {
-            return redirect()->back()->withInput()->withErrors(['comments' => 'Ошибка при сохранении комментария']);
+        $comment = $request->validate([
+            'name' => 'required|string|between:2,100',
+            'email' => 'required|string|email|max:100',
+            'text' => 'required|string|max:300',
+            'parent_id' => 'nullable|integer|exists:comments,id'
+        ]);
+
+        $captchaData = $request->captcha;
+
+        if (!$captchaData) {
+            return back()->withErrors(['captcha' => 'Пройдите капчу']);
         }
+
+        $isCaptchaCorrect = $captcha->check($captchaData);
+
+        if (!$isCaptchaCorrect) {
+            return back()->withErrors(['captcha' => 'Код капчи недействителен']);
+        }
+
+
+        Comments::create($comment);
         return back();
 
     }
 
     function reply(Request $request, Captcha $captcha)
     {
-        $dataFromRepliesForm = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'text' => 'required|string|max:1000',
-            'parent_id' => 'required|integer',
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|string|between:2,100',
+            'email' => 'required|string|email|max:100',
+            'text' => 'required|string|max:300',
+            'parent_id' => 'nullable|integer|exists:comments,id'
         ]);
 
-//        $captchaData = $request->captcha;
-//
-//        if (!$captchaData) {
-//            return back()->withErrors(['captcha' => 'Пройдите капчу']);
-//        }
-//
-//        $isCaptchaCorrect = $captcha->check($captchaData);
-//
-//        if (!$isCaptchaCorrect) {
-//            return back()->withErrors(['captcha' => 'Код капчи недействителен']);
-//        }
+        if($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors(['text' => 'Вы ввели неправильные данные']);
+        }
+
+        $dataFromRepliesForm = $request->validate([
+            'name' => 'required|string|between:2,100',
+            'email' => 'required|string|email|max:100',
+            'text' => 'required|string|max:300',
+            'parent_id' => 'nullable|integer|exists:comments,id'
+        ]);
+
+        $captchaData = $request->captcha;
+
+        if (!$captchaData) {
+            return back()->withErrors(['captcha' => 'Пройдите капчу']);
+        }
+
+        $isCaptchaCorrect = $captcha->check($captchaData);
+
+        if (!$isCaptchaCorrect) {
+            return back()->withErrors(['captcha' => 'Код капчи недействителен']);
+        }
 
         $comment = Comments::findOrFail($dataFromRepliesForm['parent_id']);
 
