@@ -28,14 +28,12 @@
                 <input type="email" name="email" class="form-control" id="email" maxlength="100" required>
             </div>
 
-            <img src="{{ $captcha->src() }}" alt="captcha">
-
-            <input id="captcha" type="text" class="form-control" name="captcha">
+            <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" data-size="normal" data-theme="light" data-type="image"></div>
 
             @if ($errors->has('captcha'))
                 <span class="help-block">
-                            <strong>{{ $errors->first('captcha') }}</strong>
-                        </span>
+                    <strong>{{ $errors->first('captcha') }}</strong>
+                </span>
             @endif
 
             <div class="form-group">
@@ -43,8 +41,8 @@
                 <textarea class="form-control" name="text" id="comment" rows="5" maxlength="300" required></textarea>
                 @if ($errors->has('text'))
                     <span class="help-block">
-                            <strong>{{ $errors->first('text') }}</strong>
-                        </span>
+                        <strong>{{ $errors->first('text') }}</strong>
+                    </span>
                 @endif
             </div>
             <button type="submit" class="btn btn-primary">Добавить комментарий</button>

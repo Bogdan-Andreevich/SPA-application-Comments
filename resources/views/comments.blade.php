@@ -18,9 +18,8 @@
                         <label for="email">Емаил</label>
                         <input type="email" name="email" class="form-control" id="email" maxlength="100" required>
                     </div>
-                    <img src="{{ $captcha->src() }}" alt="captcha">
 
-                    <input id="captcha" type="text" class="form-control" name="captcha">
+                    <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" data-size="normal" data-theme="light" data-type="image"></div>
 
                     <div class="form-group">
                         <label for="comment">Комментарий</label>
