@@ -36,6 +36,7 @@
                 </span>
             @endif
 
+
             <div class="form-group">
                 <label for="comment">Комментарий</label>
                 <textarea class="form-control" name="text" id="comment" rows="5" maxlength="300" required></textarea>
@@ -45,6 +46,12 @@
                     </span>
                 @endif
             </div>
+
+            <div class="form-group">
+                <label for="file">Файл</label>
+                <input type="file" name="file" class="form-control-file" id="file">
+            </div>
+
             <button type="submit" class="btn btn-primary">Добавить комментарий</button>
         </form>
         <hr>

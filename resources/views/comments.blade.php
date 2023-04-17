@@ -21,12 +21,19 @@
 
                     <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" data-size="normal" data-theme="light" data-type="image"></div>
 
+
+
                     <div class="form-group">
                         <label for="comment">Комментарий</label>
-                        <textarea class="form-control" name="text" id="comment" rows="5" maxlength="300"
-                                  required></textarea>
+                        <textarea class="form-control" name="text" id="comment" rows="5" maxlength="300" required></textarea>
                     </div>
                     <input type="hidden" name="parent_id" value="{{ e($comment->id) }}">
+
+                    <div class="form-group">
+                        <label for="file">Файл</label>
+                        <input type="file" name="file" class="form-control-file" id="file">
+                    </div>
+
                     <button type="submit" class="btn btn-primary">Добавить комментарий</button>
                 </form>
             </div>

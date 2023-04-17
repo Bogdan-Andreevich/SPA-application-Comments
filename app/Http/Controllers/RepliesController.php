@@ -7,18 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use ReCaptcha\ReCaptcha;
 
-class CommentsController extends Controller
+class RepliesController extends Controller
 {
-    function create($parentId = null)
+
+    function reply(Request $request)
     {
-        $comments = Comments::where('parent_id', $parentId)->get();
-        return view('сascading-сomments', compact('comments', 'parentId'));
-    }
-
-
-    function store(Request $request)
-    {
-
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100',
@@ -30,7 +23,7 @@ class CommentsController extends Controller
             return redirect()->back()->withInput()->withErrors(['text' => 'Вы ввели неправильные данные']);
         }
 
-        $comment = $request->validate([
+        $dataFromRepliesForm = $request->validate([
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100',
             'text' => 'required|string|max:300',
@@ -44,8 +37,12 @@ class CommentsController extends Controller
             return back()->withErrors(['captcha' => 'Пройдите капчу']);
         }
 
+        $comment = Comments::findOrFail($dataFromRepliesForm['parent_id']);
 
-        Comments::create($comment);
-        return back();
+        $reply = new Comments($dataFromRepliesForm);
+        $reply->parent_id = $comment->id;
+        $reply->save();
+
+        return redirect()->back();
     }
 }

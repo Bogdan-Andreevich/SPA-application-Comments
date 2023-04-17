@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\RepliesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,8 @@ use App\Http\Controllers\CommentsController;
 Route::get('/', [CommentsController::class, 'create'])->name('comments');
 Route::post('/', [CommentsController::class, 'store']);
 
-Route::post('/reply', [CommentsController::class, 'reply'])->name('reply');
+Route::post('/reply', [RepliesController::class, 'reply'])->name('reply');
+//Route::post('/upload', [CommentsController::class, 'upload'])->name('upload');
 
 
 
