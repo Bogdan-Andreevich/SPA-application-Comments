@@ -16,7 +16,8 @@ class RepliesController extends Controller
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100',
             'text' => 'required|string|max:300',
-            'parent_id' => 'nullable|integer|exists:comments,id'
+            'parent_id' => 'nullable|integer|exists:comments,id',
+            'file' => 'nullable|file|mimes:txt,jpg,png,gif|max:100'
         ]);
 
         if($validator->fails()) {
@@ -27,7 +28,8 @@ class RepliesController extends Controller
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100',
             'text' => 'required|string|max:300',
-            'parent_id' => 'nullable|integer|exists:comments,id'
+            'parent_id' => 'nullable|integer|exists:comments,id',
+            'file' => 'nullable|file|mimes:txt,jpg,png,gif|max:100'
         ]);
 
         $recaptcha = new ReCaptcha(env('RECAPTCHA_SECRET_KEY'));
@@ -35,6 +37,13 @@ class RepliesController extends Controller
 
         if (!$response->isSuccess()) {
             return back()->withErrors(['captcha' => 'Пройдите капчу']);
+        }
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = $file->getClientOriginalName();
+            $path = $file->storeAs('public/uploads', $filename);
+            $comment['file_path'] = $path;
         }
 
         $comment = Comments::findOrFail($dataFromRepliesForm['parent_id']);

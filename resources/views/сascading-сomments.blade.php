@@ -13,7 +13,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<form method="POST" action="{{ route('comments') }}">
+<form method="POST" action="{{ route('comments') }}" enctype="multipart/form-data">
     @csrf
     <div class="container">
         <h1>Комментарии</h1>

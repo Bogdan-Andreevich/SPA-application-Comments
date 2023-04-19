@@ -6,9 +6,9 @@
                 <span class="comment-date">{{ e($comment->created_at->format('d.m.Y H:i')) }}</span>
             </div>
             <div class="comment-text">{{ e($comment->text) }}</div>
-            <a href="#" class="reply-link">Reply</a>
+            <a href="#" class="reply-link">Ответить</a>
             <div class="reply-form-container reply-comment">
-                <form method="POST" action="{{ route('reply') }}">
+                <form method="POST" action="{{ route('reply') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="name">Имя</label>
@@ -29,10 +29,13 @@
                     </div>
                     <input type="hidden" name="parent_id" value="{{ e($comment->id) }}">
 
-                    <div class="form-group">
-                        <label for="file">Файл</label>
-                        <input type="file" name="file" class="form-control-file" id="file">
-                    </div>
+                    @if ($comment->file_path)
+                        @if (Str::endsWith($comment->file_path, ['.jpg', '.png', '.gif']))
+                            <img src="{{ asset('storage/' . $comment->file_path) }}" alt="Изображение">
+                        @else
+                            <a href="{{ asset('storage/' . $comment->file_path) }}" download>Скачать файл</a>
+                        @endif
+                    @endif
 
                     <button type="submit" class="btn btn-primary">Добавить комментарий</button>
                 </form>

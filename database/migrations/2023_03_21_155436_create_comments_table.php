@@ -24,6 +24,11 @@ return new class extends Migration
                 ->on('comments')
                 ->onDelete('cascade');
 
+            $table->string('file_name')->nullable();
+            $table->string('file_path')->nullable();
+            $table->string('image_name')->nullable();
+            $table->string('image_path')->nullable();
+
         });
     }
 
