@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Comments</title>
     <script defer src="{{ asset("js/Comments.js")}}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="{{ asset("css/Comments.css") }}">
@@ -16,19 +16,34 @@
 <form method="POST" action="{{ route('comments') }}" enctype="multipart/form-data">
     @csrf
     <div class="container">
-        <h1>Комментарии</h1>
+        <h1>Comments</h1>
         <form id="comment-form">
 
             <div class="form-group">
-                <label for="name">Имя</label>
-                <input type="text" name="name" class="form-control" id="name" maxlength="100" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Емаил</label>
-                <input type="email" name="email" class="form-control" id="email" maxlength="100" required>
+                <label for="name">Name</label>
+                @if ($errors->has('name'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('name') }}</strong>
+                    </span>
+                @endif
+                <input type="text" name="name" class="form-control" id="name" maxlength="100" placeholder="your name" required>
             </div>
 
-            <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" data-size="normal" data-theme="light" data-type="image"></div>
+
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                @if ($errors->has('email'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
+                @endif
+                <input type="email" name="email" class="form-control" id="email" maxlength="100" placeholder="example@gmail.com" required>
+            </div>
+
+
+
+{{--            <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" data-size="normal" data-theme="light" data-type="image"></div>--}}
 
             @if ($errors->has('captcha'))
                 <span class="help-block">
@@ -38,21 +53,21 @@
 
 
             <div class="form-group">
-                <label for="comment">Комментарий</label>
-                <textarea class="form-control" name="text" id="comment" rows="5" maxlength="300" required></textarea>
+                <label for="comment">Comment</label>
                 @if ($errors->has('text'))
                     <span class="help-block">
                         <strong>{{ $errors->first('text') }}</strong>
                     </span>
                 @endif
+                <textarea class="form-control" name="text" id="comment" rows="5" maxlength="300" required></textarea>
             </div>
 
             <div class="form-group">
-                <label for="file">Файл</label>
+                <label for="file">File</label>
                 <input type="file" name="file" class="form-control-file" id="file">
             </div>
 
-            <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+            <button type="submit" class="btn btn-primary">Add comment</button>
         </form>
         <hr>
         <div id="comments-list">

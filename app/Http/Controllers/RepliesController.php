@@ -4,20 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ValidateCommentsFormRequest;
 use App\Models\Comments;
+use Illuminate\Support\Facades\Validator;
 
 class RepliesController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('captcha')->only('reply');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('captcha')->only('reply');
+//    }
 
     function reply(ValidateCommentsFormRequest $request): object
     {
-        $dataFromRepliesForm = $request->validated();
-        if(!$dataFromRepliesForm) {
-            return redirect()->back()->withErrors($request->errors());
+        $dataFromRepliesForm = Validator::make($request->all(), $this->rules());
+        if ($dataFromRepliesForm->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($dataFromRepliesForm)
+                ->withInput();
         }
 
 
@@ -32,7 +36,7 @@ class RepliesController extends Controller
 
         $comment = Comments::findOrFail($dataFromRepliesForm['parent_id']);
 
-        $reply = new Comments($dataFromRepliesForm);
+        $reply = new Comments((array)$dataFromRepliesForm);
         $reply->parent_id = $comment->id;
         $reply->save();
 

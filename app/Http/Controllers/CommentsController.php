@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Comments;
 use App\Http\Requests\ValidateCommentsFormRequest;
+use Illuminate\Support\Facades\Validator;
 
 
 class CommentsController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('captcha')->only('store');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('captcha')->only('store');
+//    }
 
     function create($parentId = null): object
     {
@@ -23,9 +24,12 @@ class CommentsController extends Controller
 
     function store(ValidateCommentsFormRequest $request): object
     {
-        $comment = $request->validated();
-        if(!$comment) {
-            return redirect()->back()->withErrors($request->errors());
+        $comment = Validator::make($request->all(), $this->rules());
+        if ($comment->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($comment)
+                ->withInput();
         }
 
         Comments::create($comment);

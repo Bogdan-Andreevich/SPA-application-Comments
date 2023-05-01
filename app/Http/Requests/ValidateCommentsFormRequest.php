@@ -23,20 +23,20 @@ class ValidateCommentsFormRequest extends FormRequest
     {
         return [
             'name' => 'required|string|between:2,100',
-            'email' => 'required|string|email|max:100',
-            'text' => 'required|string|max:300',
+            'email' => [
+                'required',
+                'email',
+                function ($attribute, $value, $fail) {
+                    $domain = substr(strrchr($value, "@"), 1);
+
+                    if (!checkdnsrr($domain, "MX")) {
+                        $fail('Please enter a valid e-mail address');
+                    }
+                },
+            ],
+            'text' => 'required|regex:/^[a-zA-Z0-9\s]+$/|string||max:300',
             'parent_id' => 'nullable|integer|exists:comments,id',
-//            'file' => 'nullable|file|mimes:txt,jpg,png,gif|max:100'
+            'file' => 'nullable|file|mimes:txt,jpg,png,gif|max:100'
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'name.required' => 'Поле "имя" является обязательным',
-            'email.required' => 'Поле "электронная почта" является обязательным',
-            'email.email' => 'Поле "электронная почта" должно быть действительным адресом электронной почты',
-        ];
-    }
-
 }
