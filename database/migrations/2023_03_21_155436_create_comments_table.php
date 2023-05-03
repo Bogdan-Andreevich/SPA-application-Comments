@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->text('text');
+            $table->string('file')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
 
@@ -23,12 +24,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('comments')
                 ->onDelete('cascade');
-
-            $table->string('file_name')->nullable();
-            $table->string('file_path')->nullable();
-            $table->string('image_name')->nullable();
-            $table->string('image_path')->nullable();
-
         });
     }
 

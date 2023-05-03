@@ -27,15 +27,14 @@
                         <label for="comment">Comments</label>
                         <textarea class="form-control" name="text" id="comment" rows="5" maxlength="300" required></textarea>
                     </div>
-                    <input type="hidden" name="parent_id" value="{{ e($comment->id) }}">
 
-                    @if ($comment->file_path)
-                        @if (Str::endsWith($comment->file_path, ['.jpg', '.png', '.gif']))
-                            <img src="{{ asset('storage/' . $comment->file_path) }}" alt="Изображение">
-                        @else
-                            <a href="{{ asset('storage/' . $comment->file_path) }}" download>Скачать файл</a>
+                    <div class="form-group">
+                        @if ($comment->file)
+                            <p>File: <a href="{{ asset('uploads/' . $comment->file) }}">{{ $comment->file }}</a></p>
                         @endif
-                    @endif
+                    </div>
+
+                    <input type="hidden" name="parent_id" value="{{ e($comment->id) }}">
 
                     <button type="submit" class="btn btn-primary">Add comment</button>
                 </form>

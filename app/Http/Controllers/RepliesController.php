@@ -16,16 +16,16 @@ class RepliesController extends Controller
 
     function reply(ValidateCommentsFormRequest $request): object
     {
-        $dataFromRepliesForm = Validator::make($request->all(), $this->rules());
-        if ($dataFromRepliesForm->fails()) {
+        $validator = Validator::make($request->all(), $request->rules());
+        if ($validator->fails()) {
             return redirect()
                 ->back()
-                ->withErrors($dataFromRepliesForm)
+                ->withErrors($validator)
                 ->withInput();
         }
 
 
-
+        $dataFromRepliesForm = $request->validated();
 
 //        if ($request->hasFile('file')) {
 //            $file = $request->file('file');

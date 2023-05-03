@@ -24,25 +24,25 @@ class CommentsController extends Controller
 
     function store(ValidateCommentsFormRequest $request): object
     {
-        $comment = Validator::make($request->all(), $this->rules());
-        if ($comment->fails()) {
+        $validator = Validator::make($request->all(), $request->rules());
+        if ($validator->fails()) {
             return redirect()
                 ->back()
-                ->withErrors($comment)
+                ->withErrors($validator)
                 ->withInput();
         }
 
-        Comments::create($comment);
+        $dataFromMainForm = $request->validated();
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = $file->getClientOriginalName();
+            $path = $file->storeAs('public/uploads', $filename);
+            $dataFromMainForm['file_path'] = $path;
+        }
+
+        Comments::create($dataFromMainForm);
         return back();
-
-
-
-//        if ($request->hasFile('file')) {
-//            $file = $request->file('file');
-//            $filename = $file->getClientOriginalName();
-//            $path = $file->storeAs('public/uploads', $filename);
-//            $comment['file_path'] = $path;
-//        }
 
 
     }
