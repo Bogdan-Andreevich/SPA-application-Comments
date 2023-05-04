@@ -64,6 +64,11 @@
 
             <div class="form-group">
                 <label for="file">File</label>
+                @if ($errors->has('file'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('file') }}</strong>
+                    </span>
+                @endif
                 <input type="file" name="file" class="form-control-file" id="file">
             </div>
 

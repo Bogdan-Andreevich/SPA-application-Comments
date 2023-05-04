@@ -36,7 +36,7 @@ class ValidateCommentsFormRequest extends FormRequest
             ],
             'text' => 'required|regex:/^[a-zA-Z0-9\s]+$/|string||max:300',
             'parent_id' => 'nullable|integer|exists:comments,id',
-            'file' => 'nullable|file|mimes:txt,jpg,png,gif|max:100'
+            'file' => 'nullable|file|mimes:txt,jpg,png,gif|max:100',
         ];
     }
 }

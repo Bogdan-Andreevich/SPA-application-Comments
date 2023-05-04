@@ -27,12 +27,13 @@ class RepliesController extends Controller
 
         $dataFromRepliesForm = $request->validated();
 
-//        if ($request->hasFile('file')) {
-//            $file = $request->file('file');
-//            $filename = $file->getClientOriginalName();
-//            $path = $file->storeAs('public/uploads', $filename);
-//            $comment['file_path'] = $path;
-//        }
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('files', $filename);
+            $dataFromRepliesForm['file_name'] = $filename;
+            $dataFromRepliesForm['file_path'] = $path;
+        }
 
         $comment = Comments::findOrFail($dataFromRepliesForm['parent_id']);
 

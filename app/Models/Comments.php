@@ -13,6 +13,8 @@ class Comments extends Model
         'name',
         'email',
         'text',
+        'file_name',
+        'file_path',
         'parent_id',
     ];
 

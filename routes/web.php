@@ -22,8 +22,13 @@ use App\Http\Controllers\RepliesController;
 Route::get('/', [CommentsController::class, 'create'])->name('comments');
 Route::post('/', [CommentsController::class, 'store']);
 
+Route::get('download/{filename}', function ($filename) {
+    $pathToFile = public_path('assets/files/' . $filename);
+    return response()->download($pathToFile);
+})->name('file.download');
+
 Route::post('/reply', [RepliesController::class, 'reply'])->name('reply');
-//Route::post('/upload', [CommentsController::class, 'upload'])->name('upload');
+
 
 
 

@@ -36,14 +36,16 @@ class CommentsController extends Controller
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $filename = $file->getClientOriginalName();
-            $path = $file->storeAs('public/uploads', $filename);
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('files', $filename);
+            $dataFromMainForm['file_name'] = $filename;
             $dataFromMainForm['file_path'] = $path;
         }
 
-        Comments::create($dataFromMainForm);
+        $comment = new Comments($dataFromMainForm);
+        $comment->save();
         return back();
 
-
     }
+
 }
